@@ -23,15 +23,15 @@
   <script>
      const table = document.getElementsByTagName('table')[0]
       let content = '';
-      for (let i= 0; i < 8; i++) {
+        for (let i= 0; i < 8; i++) {
         content +='<tr>';
-      for (let j = 0; j < 8; j++) {  
+        for (let j = 0; j < 8; j++) {  
         if ((i+j)%2==0) {
         content += '<td class="black"></td>' 
         }
-         else content += '<td></td>'
+        else content += '<td></td>'
          } 
-         content +='<tr>';
+        content +='<tr>';
       }
       table.innerHTML = content;
 </script>
