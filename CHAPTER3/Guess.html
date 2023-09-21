@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทายเลขนะครับ น้องๆ</title>
+    <style>
+     body {
+        background-color: lightgoldenrodyellow;
+     }
+     div {
+    width: 350px;          
+    margin-left: auto;
+    margin-right: auto;
+     }
+     #number {
+    width: fit-content;
+    background-color: lightskyblue;
+    color: bisque;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 2px;
+     }
+     .try {
+    font-size: 1.5em;
+     }  
+    </style>
+</head>
+<body>
+    <div>
+        <h1>เลขของคุณนะครับ</h1>
+        <p id="number">0</p>
+        <p class="try">คุณทายไปแล้ว 0 ครั้งนะครับ</p>
+        <p class="try"></p>
+      </div>
+<script>
+    let number = Math.floor(Math.random() * 100) + 1;
+    let guesses = [];
+    let answer;
+    let count = 0;
+    do {
+  count++;
+  answer = +prompt('เรามีตัวเลข 1-100 ลองทายซิว่าเลขอะไร');
+  guesses.push(answer);
+  if (answer > number) {
+    alert('มากไปครับ');
+  } else if (answer < number) {
+    alert('น้อยไปครับ');
+  } else {
+    alert('ถูกต้องแล้วครับ ไอน้องชาย');
+  }
+} while (answer != number);
+document.getElementById('number').innerHTML = number;
+document.querySelectorAll('.try')[0].innerHTML = 'น้องชายทายไป ' + count + ' ครั้ง';
+document.querySelectorAll('.try')[1].innerHTML = guesses;
+</script>          
+</body>
+</html>
