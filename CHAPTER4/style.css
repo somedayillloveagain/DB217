@@ -30,7 +30,8 @@
   background-color: lightslategray;
   height: 180px;
   margin: 0 auto;
-  width: 949px;
+  width: 947px;
+  overflow: hidden;
   display: flex;
 }
 
@@ -50,7 +51,7 @@
 
 .black {
  position: relative;
-
+ z-index: 998;
 } 
 
 .black>.label {
@@ -59,6 +60,17 @@
  width: 32px;
  left: -16px;
  top: 50px;
+ z-index: 1000;
+}
+.label {
+ text-align: center;
+ font-family: sans-serif;
+ line-height: 2em;
+ font-size: 0.8em;
+}
+.key:active, .pressed {
+ transform: translateY(2px);
+
 }
 
 .black::after {
@@ -68,5 +80,26 @@
  height: 100px;
  position: absolute;
  left: -16px;
+ z-index: 999;
  border-radius: 0 0 3px 3px;
+}
+
+@media (max-width: 768px) {
+  #piano {
+    width: 358px;
+  }
+
+  #keys {
+    width: 316px;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 769px) {
+  #piano {
+    width: 675px;
+  }
+
+  #keys {
+    width: 631px;
+  }
 }

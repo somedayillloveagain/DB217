@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respontive Piano</title>
     <link rel="stylesheet" href="style.css">
+    <script src="audiosynth.js"></script>
 </head>
 <body>
    <div id="piano">     
@@ -36,6 +37,38 @@
      octave_keys += '</div>'   
     }
     document.getElementById('keys').innerHTML = octave_keys;
-    </script>
+    Synth.setVolume(0.5);
+    function playNote(key) {
+      const note = key.dataset.note;
+      const octave = key.parentElement.dataset.octave;
+      Synth.play(0, note, octave, 4);
+    
+    }
+    const keys = document.querySelectorAll('.key') ;
+     for (let key of keys) {
+     key.addEventListener('mousedown', function () {
+     playNote(key);
+    });
+  }
+
+    window.addEventListener('keydown', function (event) {
+     const keyboard = event.key;
+     const key = document.querySelector(`.key[data-keyboard="${keyboard}"]`);
+     if (key) {
+     if (!key.classList.contains('pressed')) {
+     key.classList.add('pressed');
+     playNote(key);
+      }
+    }
+  });
+  window.addEventListener('keyup', function (event) {
+    const keyboard = event.key;
+    const key = document.querySelector(`.key[data-keyboard="${keyboard}"]`);
+    if (key) {
+      key.classList.remove('pressed');
+    }
+  });
+  
+</script>
 </body>
 </html>
