@@ -38,13 +38,18 @@ function doReset() {
 }
 
 function factorial(n) {
-
+  // base case
+ if(n ==0){
+  return 1n;
+ }
+  // recursive step
+ return BigInt(n) * factorial(n - 1);
 }
 
 function calCombination() {
   const c = combSize.value;
   // Calculate the number of combinations (amount)
-
+ const amount = factorial(52) / (factorial(c) *factorial(52 - c))
   combSizeLabel.innerHTML = c;
   amountComb.innerHTML = amount.toLocaleString("th-TH");
   combId.setAttribute("max", amount);
@@ -59,31 +64,40 @@ function selectCombination() {
   const id = combId.value;
   const c = +combSize.value;
   combIdLabel.innerHTML = id;
-  let limit = 52 - c + 1;
-  let remain = id - 1;
   const cards = deck.deal();
-  let choices = cards.slice(0, limit - 1);
-  for (let i = 0; i < c; i++) {
-    choices = choices.reduce((prev, curr) => {
-      if (!combination.includes(curr)) prev.push(curr);
-      return prev;
-    }, []);
-    choices.push(cards[limit - 1 + i]);
-    if (i == c - 1) {
-      combination[i] = choices[remain];
-    } else {
-      const part = limit ** (c - 1 - i);
-      combination[i] = choices[Math.floor(remain / part)];
-      remain = remain % part;
-    }
-  }
+  pickCombinationCard(cards, c, BigInt(id - 1));
   selectPermutation();
+}
+
+function pickCombinationCard(cards, c, id) {
+  // base case
+ if(c ==1){
+  combination.push(cards[id]);
+  return;
+ }
+  // recursive step
+  const restC = c - 1;
+  let restN = cards.length - 1;
+  let restFact = factorial(restN) / (factorial(restC) * factorial(restN - restC));
+  let index = 0;
+  while(restFact <= id) {
+   index++;
+   restN--;
+   id -= restFact;
+   restFact = factorial(restN) / (factorial(restC) * factorial(restN - restC));
+  }
+ combination.push(cards[index]);
+ pickCombinationCard(
+ cards.slice(index + 1), 
+ c - 1,
+ id
+ );
 }
 
 function calPermutation() {
   const n = combSize.value;
   // Calculate the permutation value (maxPermId)
-
+  maxPermId = factorial(n);
   permSizeLabel.innerHTML = n;
   amountPerm.innerHTML = maxPermId.toLocaleString("th-TH");
   permId.value = maxPermId;
@@ -95,35 +109,29 @@ function selectPermutation() {
   let id = permId.value;
   permIdLabel.innerHTML = id;
   if (Number.isInteger(+id) && (id = BigInt(id)) >= 1n && id <= maxPermId) {
-    // Remove the "is-invalid" class from the permutation ID input
-
-    // Clear the permutation area
-
-    // Create an array of cards from the combination
-
-    let remain = id - 1n;
-    for (let i = 1; i < n; i++) {
-      // Calculate (n-i)! (nfact)
-
-      // Calculate the index of the card to display (index)
-
-      // Get the card to display (card)
-
-      // Display the card
-
-      // Remove the displayed card from the array
-
-      // Calculate the remaining ID
-      remain = remain % nfact;
-    }
-    // Get the last card to display
-    const card = cards[remain];
-    // Display the last card
-    permutationArea.innerHTML += `<div class="deck-card m${card.mark} ${card.suite}"></div>`;
+    permId.classList.remove("is-invalid");
+    permutationArea.innerHTML = "";
+    const cards = Array.from(combination);
+    pickPermutationCard(cards, id - 1n);
   } else {
-    // Add the "is-invalid" class to the permutation ID input
-
+    permId.classList.add("is-invalid");
   }
+}
+
+function pickPermutationCard(cards, id) {
+  // base case
+ if(cards.length == 1){
+ const card = cards[0];
+ permutationArea.innerHTML += `<div class="deck-card ${card.suite} m${card.mark}"></div>`;
+ return;
+ }
+  // recursive case
+  const setSize = factorial(cards.length - 1);
+  const index = id / setSize;
+  const card = cards[index];
+  permutationArea.innerHTML += `<div class="deck-card ${card.suite} m${card.mark}"></div>`;
+  cards.splice(index.toString(), 1);
+  pickPermutationCard(cards, id % setSize)
 }
 
 let deck = new Deck();
